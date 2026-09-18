@@ -1,1 +1,1078 @@
+<!DOCTYPE html>
 
+<body>
+    <html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <title>Lord Ganesha - Modak Quest</title>
+
+        <style>
+            * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+            }
+
+            body {
+                overflow: hidden;
+                font-family: Arial, sans-serif;
+                background: linear-gradient(#ff7b00,
+                        #ffb703,
+                        #ffd166);
+            }
+
+            /* GAME */
+
+            #game {
+                width: 100vw;
+                height: 100vh;
+                position: relative;
+                overflow: hidden;
+
+                background:
+                    radial-gradient(circle at 20% 20%, #fff4 2px, transparent 3px),
+                    radial-gradient(circle at 80% 30%, #fff4 2px, transparent 3px),
+                    linear-gradient(#ff6b35, #ffb703, #ffe66d);
+            }
+
+            /* TITLE */
+
+            #title {
+                position: absolute;
+                top: 15px;
+                width: 100%;
+                text-align: center;
+
+                color: white;
+
+                font-size: 35px;
+
+                font-weight: bold;
+
+                text-shadow:
+                    3px 3px #d62828;
+            }
+
+            /* SCORE PANEL */
+
+            #panel {
+
+                position: absolute;
+
+                top: 75px;
+
+                left: 20px;
+
+                background: #ffffffcc;
+
+                padding: 15px 25px;
+
+                border-radius: 20px;
+
+                font-size: 20px;
+
+                font-weight: bold;
+
+                color: #6a040f;
+
+                box-shadow: 0 5px 20px #0005;
+
+            }
+
+            /* GANESHA */
+
+            #ganesha {
+
+                position: absolute;
+
+                bottom: 35px;
+
+                left: 50%;
+
+                transform: translateX(-50%);
+
+                font-size: 90px;
+
+                filter:
+                    drop-shadow(0 8px 5px #0005);
+
+                transition:
+                    transform .1s;
+
+            }
+
+            /* OBJECTS */
+
+            .object {
+
+                position: absolute;
+
+                font-size: 45px;
+
+                filter:
+                    drop-shadow(0 5px 4px #0004);
+
+            }
+
+            /* CLOUD */
+
+            .cloud {
+
+                position: absolute;
+
+                color: white;
+
+                font-size: 70px;
+
+                opacity: .7;
+
+                animation: cloudMove linear infinite;
+
+            }
+
+            @keyframes cloudMove {
+
+                from {
+                    left: -150px;
+                }
+
+                to {
+                    left: 110%;
+                }
+
+            }
+
+            /* START SCREEN */
+
+            #startScreen {
+
+                position: absolute;
+
+                width: 100%;
+
+                height: 100%;
+
+                display: flex;
+
+                justify-content: center;
+
+                align-items: center;
+
+                background: #0006;
+
+                z-index: 10;
+
+            }
+
+            .card {
+
+                text-align: center;
+
+                background: linear-gradient(135deg,
+                        #fff7ae,
+                        #ffd166);
+
+                padding: 40px;
+
+                border-radius: 35px;
+
+                width: 420px;
+
+                box-shadow:
+                    0 15px 40px #0007;
+
+                border: 6px solid #ff7b00;
+
+            }
+
+            .card h1 {
+
+                color: #d62828;
+
+                font-size: 40px;
+
+                margin-bottom: 15px;
+
+            }
+
+            .big {
+
+                font-size: 90px;
+
+            }
+
+            .card p {
+
+                margin: 10px;
+
+                font-size: 18px;
+
+            }
+
+            button {
+
+                margin-top: 20px;
+
+                border: none;
+
+                padding: 15px 35px;
+
+                border-radius: 30px;
+
+                font-size: 20px;
+
+                font-weight: bold;
+
+                cursor: pointer;
+
+                color: white;
+
+                background:
+                    linear-gradient(45deg,
+                        #d62828,
+                        #ff7b00);
+
+                box-shadow:
+                    0 6px 15px #0004;
+
+                transition: .2s;
+
+            }
+
+            button:hover {
+
+                transform: scale(1.1);
+
+            }
+
+            /* GAME OVER */
+
+            #gameOver {
+
+                position: absolute;
+
+                display: none;
+
+                width: 100%;
+
+                height: 100%;
+
+                justify-content: center;
+
+                align-items: center;
+
+                background: #0008;
+
+                z-index: 20;
+
+            }
+
+            /* MESSAGE */
+
+            #message {
+
+                position: absolute;
+
+                top: 150px;
+
+                left: 50%;
+
+                transform: translateX(-50%);
+
+                font-size: 32px;
+
+                color: white;
+
+                font-weight: bold;
+
+                text-shadow: 3px 3px #d62828;
+
+                opacity: 0;
+
+                transition: .3s;
+
+            }
+
+            /* CONTROLS */
+
+            #controls {
+
+                position: absolute;
+
+                bottom: 20px;
+
+                width: 100%;
+
+                display: flex;
+
+                justify-content: space-between;
+
+                padding: 20px;
+
+            }
+
+            .controlButton {
+
+                width: 90px;
+
+                height: 70px;
+
+                border-radius: 20px;
+
+                font-size: 35px;
+
+                opacity: .7;
+
+            }
+
+            /* TEMPLE */
+
+            #temple {
+
+                position: absolute;
+
+                right: 20px;
+
+                bottom: 20px;
+
+                font-size: 100px;
+
+                opacity: .4;
+
+            }
+        </style>
+    </head>
+
+
+    <body>
+
+
+        <div id="game">
+
+            <div id="title">
+                ✨ Lord Ganesha - Modak Quest ✨
+            </div>
+
+
+            <div id="panel">
+
+                🏆 Score:
+                <span id="score">0</span>
+
+                <br>
+
+                ❤️ Lives:
+                <span id="lives">3</span>
+
+                <br>
+
+                🔥 Level:
+                <span id="level">1</span>
+
+            </div>
+
+
+            <div id="message">
+                +10 MODAK!
+            </div>
+
+
+            <div id="temple">
+                🛕
+            </div>
+
+
+            <div id="ganesha">
+                🐘
+            </div>
+
+
+            <!-- CLOUDS -->
+
+            <div class="cloud" style="
+top:120px;
+animation-duration:15s;
+">
+                ☁️
+            </div>
+
+            <div class="cloud" style="
+top:230px;
+animation-duration:22s;
+animation-delay:4s;
+">
+                ☁️
+            </div>
+
+
+            <!-- START SCREEN -->
+
+            <div id="startScreen">
+
+                <div class="card">
+
+                    <div class="big">
+                        🐘
+                    </div>
+
+                    <h1>
+                        GANESHA MODAK QUEST
+                    </h1>
+
+                    <p>
+                        🥟 Collect Modaks
+                    </p>
+
+                    <p>
+                        🌸 Collect Lotus for bonus points
+                    </p>
+
+                    <p>
+                        ⚡ Collect Stars for special bonus
+                    </p>
+
+                    <p>
+                        💥 Avoid obstacles
+                    </p>
+
+                    <p>
+                        ⌨️ Use
+                        <b>← →</b>
+                        or
+                        <b>A D</b>
+                        to move
+                    </p>
+
+                    <button onclick="startGame()">
+                        START GAME
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <!-- GAME OVER -->
+
+            <div id="gameOver">
+
+                <div class="card">
+
+                    <div class="big">
+                        🙏
+                    </div>
+
+                    <h1>
+                        GAME OVER
+                    </h1>
+
+                    <p>
+                        Your Score
+                    </p>
+
+                    <h1 id="finalScore">
+                        0
+                    </h1>
+
+                    <p>
+                        🌺 Ganpati Bappa Morya 🌺
+                    </p>
+
+                    <button onclick="restartGame()">
+                        PLAY AGAIN
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <!-- MOBILE CONTROLS -->
+
+            <div id="controls">
+
+                <button class="controlButton" onmousedown="left=true" onmouseup="left=false" ontouchstart="left=true" ontouchend="left=false">
+                    ⬅️
+                </button>
+
+                <button class="controlButton" onmousedown="right=true" onmouseup="right=false" ontouchstart="right=true" ontouchend="right=false">
+                    ➡️
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <script>
+            const game =
+                document.getElementById("game");
+
+            const ganesha =
+                document.getElementById("ganesha");
+
+            const scoreText =
+                document.getElementById("score");
+
+            const livesText =
+                document.getElementById("lives");
+
+            const levelText =
+                document.getElementById("level");
+
+            const message =
+                document.getElementById("message");
+
+
+            let score = 0;
+
+            let lives = 3;
+
+            let level = 1;
+
+            let gameRunning = false;
+
+            let left = false;
+
+            let right = false;
+
+            let playerX =
+                window.innerWidth / 2;
+
+            let speed = 8;
+
+            let fallSpeed = 4;
+
+            let spawnSpeed = 1000;
+
+
+            /* KEYBOARD */
+
+            document.addEventListener(
+
+                "keydown",
+
+                function(e) {
+
+                    if (
+                        e.key === "ArrowLeft" ||
+                        e.key.toLowerCase() === "a"
+                    ) {
+
+                        left = true;
+
+                    }
+
+                    if (
+                        e.key === "ArrowRight" ||
+                        e.key.toLowerCase() === "d"
+                    ) {
+
+                        right = true;
+
+                    }
+
+                }
+
+            );
+
+
+            document.addEventListener(
+
+                "keyup",
+
+                function(e) {
+
+                    if (
+                        e.key === "ArrowLeft" ||
+                        e.key.toLowerCase() === "a"
+                    ) {
+
+                        left = false;
+
+                    }
+
+                    if (
+                        e.key === "ArrowRight" ||
+                        e.key.toLowerCase() === "d"
+                    ) {
+
+                        right = false;
+
+                    }
+
+                }
+
+            );
+
+
+            /* START */
+
+            function startGame() {
+
+                document
+                    .getElementById("startScreen")
+                    .style.display = "none";
+
+                gameRunning = true;
+
+                gameLoop();
+
+                spawnObject();
+
+            }
+
+
+            /* PLAYER MOVEMENT */
+
+            function movePlayer() {
+
+                if (left) {
+
+                    playerX -= speed;
+
+                }
+
+                if (right) {
+
+                    playerX += speed;
+
+                }
+
+
+                let min =
+                    50;
+
+                let max =
+                    window.innerWidth - 50;
+
+
+                if (playerX < min) {
+
+                    playerX = min;
+
+                }
+
+                if (playerX > max) {
+
+                    playerX = max;
+
+                }
+
+
+                ganesha.style.left =
+                    playerX + "px";
+
+            }
+
+
+            /* CREATE OBJECT */
+
+            function spawnObject() {
+
+                if (!gameRunning) {
+
+                    return;
+
+                }
+
+
+                createObject();
+
+
+                setTimeout(
+
+                    spawnObject,
+
+                    spawnSpeed
+
+                );
+
+            }
+
+
+            /* RANDOM ITEM */
+
+            function createObject() {
+
+                let obj =
+                    document.createElement("div");
+
+                obj.classList.add("object");
+
+
+                let random =
+                    Math.random();
+
+
+                let type;
+
+
+                if (random < .55) {
+
+                    type = "modak";
+
+                    obj.innerHTML = "🥟";
+
+                } else if (random < .72) {
+
+                    type = "lotus";
+
+                    obj.innerHTML = "🌸";
+
+                } else if (random < .82) {
+
+                    type = "star";
+
+                    obj.innerHTML = "⭐";
+
+                } else {
+
+                    type = "obstacle";
+
+                    obj.innerHTML = "💥";
+
+                }
+
+
+                obj.dataset.type =
+                    type;
+
+
+                obj.style.left =
+
+                    Math.random()
+
+                    *
+
+                    (window.innerWidth - 70)
+
+                    +
+
+                    "px";
+
+
+                obj.style.top =
+                    "-70px";
+
+
+                game.appendChild(obj);
+
+
+                fall(obj);
+
+            }
+
+
+            /* FALL */
+
+            function fall(obj) {
+
+                let y = -70;
+
+
+                function move() {
+
+                    if (!gameRunning) {
+
+                        obj.remove();
+
+                        return;
+
+                    }
+
+
+                    y += fallSpeed;
+
+
+                    obj.style.top =
+                        y + "px";
+
+
+                    if (checkCollision(obj)) {
+
+                        handleCollision(obj);
+
+                        return;
+
+                    }
+
+
+                    if (
+                        y >
+                        window.innerHeight
+                    ) {
+
+                        obj.remove();
+
+                        return;
+
+                    }
+
+
+                    requestAnimationFrame(move);
+
+                }
+
+
+                requestAnimationFrame(move);
+
+            }
+
+
+            /* COLLISION */
+
+            function checkCollision(obj) {
+
+                let a =
+                    ganesha.getBoundingClientRect();
+
+                let b =
+                    obj.getBoundingClientRect();
+
+
+                return !(
+
+                    a.right < b.left
+
+                    ||
+
+                    a.left > b.right
+
+                    ||
+
+                    a.bottom < b.top
+
+                    ||
+
+                    a.top > b.bottom
+
+                );
+
+            }
+
+
+            /* HANDLE ITEM */
+
+            function handleCollision(obj) {
+
+                let type =
+                    obj.dataset.type;
+
+
+                if (type === "modak") {
+
+                    score += 10;
+
+                    showMessage(
+                        "🥟 +10 MODAK!"
+                    );
+
+                } else if (type === "lotus") {
+
+                    score += 25;
+
+                    showMessage(
+                        "🌸 +25 LOTUS BONUS!"
+                    );
+
+                } else if (type === "star") {
+
+                    score += 50;
+
+                    showMessage(
+                        "⭐ +50 DIVINE BONUS!"
+                    );
+
+                } else if (type === "obstacle") {
+
+                    lives--;
+
+                    shakePlayer();
+
+                    showMessage(
+                        "💥 OOPS! LIFE LOST"
+                    );
+
+                }
+
+
+                obj.remove();
+
+
+                scoreText.innerText =
+                    score;
+
+                livesText.innerText =
+                    lives;
+
+
+                checkLevel();
+
+
+                if (lives <= 0) {
+
+                    endGame();
+
+                }
+
+            }
+
+
+            /* LEVEL */
+
+            function checkLevel() {
+
+                let newLevel =
+
+                    Math.floor(
+                        score / 100
+                    )
+
+                    +
+                    1;
+
+
+                if (newLevel > level) {
+
+                    level =
+                        newLevel;
+
+
+                    levelText.innerText =
+                        level;
+
+
+                    fallSpeed += .7;
+
+
+                    spawnSpeed =
+                        Math.max(
+                            400,
+                            spawnSpeed - 80
+                        );
+
+
+                    showMessage(
+                        "🔥 LEVEL " +
+                        level +
+                        "!"
+                    );
+
+                }
+
+            }
+
+
+            /* MESSAGE */
+
+            function showMessage(text) {
+
+                message.innerText =
+                    text;
+
+                message.style.opacity =
+                    1;
+
+
+                setTimeout(
+
+                    () => {
+
+                        message.style.opacity =
+                            0;
+
+                    },
+
+                    600
+
+                );
+
+            }
+
+
+            /* PLAYER EFFECT */
+
+            function shakePlayer() {
+
+                ganesha.style.transform =
+                    "translateX(-50%) scale(1.3) rotate(10deg)";
+
+
+                setTimeout(
+
+                    () => {
+
+                        ganesha.style.transform =
+                            "translateX(-50%)";
+
+                    },
+
+                    250
+
+                );
+
+            }
+
+
+            /* GAME LOOP */
+
+            function gameLoop() {
+
+                if (!gameRunning) {
+
+                    return;
+
+                }
+
+
+                movePlayer();
+
+
+                requestAnimationFrame(
+                    gameLoop
+                );
+
+            }
+
+
+            /* GAME OVER */
+
+            function endGame() {
+
+                gameRunning =
+                    false;
+
+
+                document
+                    .getElementById("finalScore")
+                    .innerText =
+                    score;
+
+
+                document
+                    .getElementById("gameOver")
+                    .style.display =
+                    "flex";
+
+            }
+
+
+            /* RESTART */
+
+            function restartGame() {
+
+                location.reload();
+
+            }
+        </script>
+
+    </body>
+
+    </html>
+</body>
+
+</html>
